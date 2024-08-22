@@ -118,33 +118,58 @@ LDS R20,V_NUM+0
 STS V_NUM+1,R20
 LDI R20,48
 SUB	R16,R20
-STS V_NUM,R16
+STS V_NUM+0,R16
 LDI R18,4		;carga 4 en C_NUM
 STS C_NUM,R18
 RET
 ;-----------------------------------------------------------------------------------------------
 ENTERs:	;Hay que armar el numero con los digitos cargados
 LDS R16,V_NUM+0		;Es la unidad
+
 LDS R17,V_NUM+1		;Se multiplica por 10
 LDI R20,10
-MUL R17,R20			;MUL multiplica registros sin signo
-LDS R18,V_NUM+2		;Se multiplica por 100
-LDI R20,100
-MUL R18,R20
-LDS R19,V_NUM+3		;Se multiplica por 1000
-MUL R19,R20		;Lo multiplica 2 veces porque no se puede directamente por 1000
-MUL R19,R20
-;Hay que sumar todos los valores y guardarlos en NUM
-ADD R16,R17
-ADD R18,R19
+MUL R17,R20			;MUL multiplica registros sin signo, se guarda en R0,R1
+MOVW R18,R0
+
 ADD R16,R18
+
+LDS R18,V_NUM+2		;Se multiplica por 100, 2 veces por 10
+LDI R20,10
+MUL R18,R20
+MOVW R18,R0
+MUL R18,R20
+MOVW R18,R0
+
+ADD R16,R18
+
+
+LDS R19,V_NUM+3		;Se multiplica por 1000
+LDI R20,10
+MUL R19,R20		;Lo multiplica 3 veces por 10
+MOVW R22,R0
+MUL R22,R20
+MOVW R22,R0
+MUL R22,R20
+MOVW R20,R0
+
+ADD R16,R20
+;Hay que sumar todos los valores y guardarlos en NUM
+
 STS NUM,R16
 
-LDS r24,NUM		;Manda el valor
-LDS r25,NUM+1		;Manda el valor
+CLR R25
+LDS r24,NUM		;Manda el valor para probar
+LDS r25,NUM+1		
 Call DESARMAR_ENVIAR1	
-RET
 
+LDI R20,0
+STS V_NUM,R20
+STS V_NUM+1,R20
+STS V_NUM+2,R20
+STS V_NUM+3,R20
+
+RET
+;-----------------------------------------------------------------------------------------------
 
 
 DESARMAR_ENVIAR1:
