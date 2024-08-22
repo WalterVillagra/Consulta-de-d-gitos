@@ -18,7 +18,7 @@ JMP	ISR_RX
 		Recepcion: .BYTE 1 
 		C_NUM: .BYTE 1
 		V_NUM: .BYTE 4
-		NUM: .BYTE 4
+		NUM: .BYTE 2
 INICIO:
 		LDI R18,4		;carga 4 en C_NUM
 		STS C_NUM,R18
