@@ -67,7 +67,7 @@ CPI	R18,47		;compara hasta el 48, si no esta en el rango sigue comparando para l
 BRNE BUCLE_NUM
 RET
 
-ES_NUMs:	;tengo que guardar los numeros en V_NUM	
+ES_NUM:	;tengo que guardar los numeros en V_NUM	
 LDS	R18,C_NUM
 CPI	r18,4
 BREQ	N_UNO
